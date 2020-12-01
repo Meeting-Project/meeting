@@ -1,0 +1,17 @@
+.input{
+    width:100%;
+    padding: 10px;
+    box-sizing: border-box;
+}
+.input-element{
+    width: 100%;
+    padding: 10px;
+    background-color: #fafafa;
+    border: 1px solid #e1bee7;
+    display: block;
+    font :inherit;
+    outline: none;
+}
+.inValid{
+    border : 1px solid rgb(211, 31, 31);
+}
