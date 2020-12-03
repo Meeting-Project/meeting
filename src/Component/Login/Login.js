@@ -1,107 +1,119 @@
-import React from 'react'
-import './Login.css'
-import InputLogin from "../UI/InputLogin/InputLogin"
-class Login extends React.Component {
-    state = {
-        form: {
-            email: {
-                label: "Email",
-                elementType: 'input',
-                elementConfig: {
-                    type: 'text',
-                    placeholder: 'Email...'
-                },
-                value: '',
-                validation: {
-                    required: true
-                },
-                valid: false,
-                typing: false
-            },
-            password: {
-                label: "Password",
-                elementType: 'input',
-                elementConfig: {
-                    type: 'password',
-                    placeholder: 'password...'
-                },
-                value: '',
-                validation: {
-                    required: true
-                },
-                valid: false,
-                typing: false
-            },
-            Rememberme: {
-                label: "Remember me",
-                elementType: 'input',
-                elementConfig: {
-                    type: 'checkbox',
+import React, { Component } from 'react';
 
-                },
-                value: '',
-                validation: {
-                    required: true
-                },
-                valid: false,
-                typing: false
-            }
-        }
-    }
+import './Login.css';
 
-    checkValidation = (value, rules) => {
-        let isValid = false
-        if (rules.required) {
-            isValid = value.trim() !== ''
-        }
-        return isValid
-    }
-    changeValuehandler = (event, inputElem) => {
-        const updatedform = {
-            ...this.state.form
-        }
-        const updatedElement = { ...updatedform[inputElem] }
-        updatedElement.value = event.target.value
+const validEmailRegex = RegExp(
+	/^(([^<>()\[\]\.,;:\s@\"]+(\.[^<>()\[\]\.,;:\s@\"]+)*)|(\".+\"))@(([^<>()[\]\.,;:\s@\"]+\.)+[^<>()[\]\.,;:\s@\"]{2,})$/i
+);
+const validateForm = (errors) => {
+	let valid = true;
+	Object.values(errors).forEach((val) => val.length > 0 && (valid = false));
+	return valid;
+};
 
-        updatedElement.valid = this.checkValidation(updatedElement.value, updatedElement.validation)
-        updatedElement.typing = true
-        updatedform[inputElem] = updatedElement
-        this.setState({ form: updatedform })
+class Login extends Component {
+	constructor(props) {
+		super(props);
+		this.state = {
+			email: null,
+			password: null,
+			errors: {
+				email: '',
+				password: ''
+			},
+			isDisabled: true
+		};
+	}
 
-    }
+	handleChange = (event) => {
+		event.preventDefault();
+		const { name, value } = event.target;
+		let errors = this.state.errors;
 
-    render() {
-        let elementArray = []
-        for (let item in this.state.form) {
-            elementArray.push({
-                id: item,
-                config: this.state.form[item]
-            })
+		switch (name) {
+			case 'email':
+				errors.email = validEmailRegex.test(value) ? '' : 'ایمیل وارد شده معتبر نیست!';
+				break;
+			case 'password':
+				errors.password = value.length < 8 ? 'رمز عبور می بایست 8 حرف باشد!' : '';
+				break;
+			default:
+				break;
+		}
 
-        }
-        return (
-            <div className="container">
-                <div className="login-form">
-                    <form >
-                        <h2>Login</h2>
-                        {elementArray.map((item) => {
+		this.setState({ errors, [name]: value });
+		if (validateForm(this.state.errors) && this.state.email !== null && this.state.password !== null) {
+			this.setState({ isDisabled: false });
+		} else {
+			this.setState({ isDisabled: true });
+		}
+	};
 
-                            return (
-                                <>
-                                    <label>{item.config.label}</label>
-                                    <InputLogin key={item.id} elementConfig={item.config.elementConfig}
-                                        value={item.config.value}
-                                        inValid={!item.config.valid}
-                                        typing={item.config.typing}
-                                        change={(event) => { this.changeValuehandler(event, item.id) }} />
-                                </>
-                            )
-                        })}
-                        <button className="btn btn-primary" >submit</button>
-                    </form>
-                </div>
-            </div>
-        )
-    }
+	handleSubmit = (event) => {
+		event.preventDefault();
+		if (validateForm(this.state.errors)) {
+			console.info('Valid Form');
+		} else {
+			console.error('Invalid Form');
+		}
+	};
+
+	render() {
+		const { errors } = this.state;
+		return (
+			<div className="login-form">
+				<div className="meeting">
+					<span className="span-one">Meeting-</span>
+					<span className="span-tow">Time</span>
+				</div>
+				<p className="signup">
+					آیا حساب کاربری ندارید؟ <a href="#">ثبت نام</a>{' '}
+				</p>
+				<form onSubmit={this.handleSubmit} noValidate>
+					<div className="email">
+						<label className="label" htmlFor="email">
+							آدرس ایمیل
+						</label>
+						<input
+							className="input-element "
+							type="email"
+							name="email"
+							onChange={this.handleChange}
+							noValidate
+						/>
+						{errors.email.length > 0 && <span className="error">{errors.email}</span>}
+					</div>
+					<div className="password">
+						<label className="label" htmlFor="password">
+							رمز عبور
+						</label>
+						<input
+							className="input-element"
+							type="password"
+							name="password"
+							onChange={this.handleChange}
+							noValidate
+						/>
+						{errors.password.length > 0 && <span className="error">{errors.password}</span>}
+					</div>
+					<div>
+						<label className="label" for="checkbox">
+							مرا به خاطر بسپار
+						</label>
+						<input type="checkbox" name="checkbox" value="" />
+					</div>
+					<div>
+						<button
+							className={this.state.isDisabled ? 'disabled' : 'submit'}
+							disabled={this.state.isDisabled}
+						>
+							ورود
+						</button>
+					</div>
+				</form>
+			</div>
+		);
+	}
 }
-export default Login
+
+export default Login;
