@@ -1,0 +1,76 @@
+.login-form h2 {
+    text-align: center;
+}
+.login-form h6{
+    margin-top:20px;
+    text-align: center;
+}
+.login-form .second{
+color: #f67964;
+}
+@font-face {
+    font-family: 'vazir';
+    src: url('../assets/font/Vazir.woff') format('woff')
+         
+    }
+*{
+    font-family: 'vazir' !important;
+    text-align: right;
+    direction: rtl;
+}
+.login-form form{
+    margin-top: 35px;
+}
+.login-form .form-control{
+    padding: 9px 10px;
+    border-radius: 3px;
+    border: 1px solid #cbd6e2;
+    font-size: 14px;
+    transition: all .15s ease-out;
+    background-color: #f5f8fa;
+    color: #3a4147;
+    display: block;
+    height: 40px;
+    border-radius: 20px;
+    line-height: 22px;
+    text-align: left;
+    vertical-align: middle;
+    width: 100%;
+    outline: none !important;
+}
+.login-form label{
+   margin-bottom: 10px !important;
+    font-weight: 500 !important;
+    font-size: 14px !important;
+    color:#33475b;
+}
+.login-form .btn-primary{
+    background-color: #f67964;
+    padding: 10px;
+    outline: none;
+    border-radius: 20px;
+    width: 100%;
+    margin-top: 20px;
+    border: none;
+}
+.login-form .btn-link{
+    width: 100%;
+    background-color: #516f90;
+    padding: 10px;
+    outline: none;
+    border-radius: 20px;
+    width: 100%;
+    margin-top: 20px;
+    border: none;
+    color:#fff;
+    text-decoration: none;
+}
+.alert-danger {
+    color: #a82523;
+    background-color: #f6796421;
+    border-color: #ebccd1;
+    text-align: center;
+}
+.help-block{
+    color:red !important;
+}
